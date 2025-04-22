@@ -20,4 +20,4 @@ const schema = mongoose.Schema(
 class Users extends mongoose.Model {}
 
 schema.loadClass(Users);
-module.exports = mongoose.model("/users", schema);
+module.exports = mongoose.model("users", schema);
