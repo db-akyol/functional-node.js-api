@@ -46,8 +46,7 @@ router.post("/add", async (req, res) => {
       email: body.email,
       password: body.password,
       is_active: true,
-      first_name: body.first_name,
-      last_name: body.last_name,
+      customer_name: body.customer_name,
       phone_number: body.phone_number,
     });
 
@@ -85,8 +84,7 @@ router.post("/update", async (req, res) => {
     }
 
     if (typeof body.is_active === "boolean") updates.is_active = body.is_active;
-    if (body.first_name) updates.first_name = body.first_name;
-    if (body.last_name) updates.last_name = body.last_name;
+    if (body.customer_name) updates.customer_name = body.customer_name;
     if (body.phone_number) updates.phone_number = body.phone_number;
     if (body.email) updates.email = body.email;
 
