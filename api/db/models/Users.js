@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const schema = mongoose.Schema(
   {
@@ -7,6 +8,7 @@ const schema = mongoose.Schema(
     is_active: { type: Boolean, default: true },
     customer_name: { type: String, required: true },
     phone_number: String,
+    refresh_token: String,
   },
   {
     timestamps: {
@@ -15,6 +17,19 @@ const schema = mongoose.Schema(
     },
   }
 );
+
+// Şifre hashleme middleware
+schema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
+
+// Şifre karşılaştırma metodu
+schema.methods.comparePassword = async function (candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
 class Users extends mongoose.Model {}
 

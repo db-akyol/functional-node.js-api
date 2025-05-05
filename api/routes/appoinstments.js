@@ -5,8 +5,9 @@ const Response = require("../lib/Response");
 const CustomError = require("../lib/Error");
 const Enum = require("../config/Enum");
 const is = require("is_js");
+const authMiddleware = require("../middleware/auth");
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   try {
     let appoinstments = await Appoinstments.find({});
     return res.json(Response.succesResponse(appoinstments));
@@ -16,7 +17,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", authMiddleware, async (req, res) => {
   let body = req.body;
   try {
     if (!body.customer_name) {

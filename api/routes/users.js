@@ -5,9 +5,10 @@ const Response = require("../lib/Response");
 const CustomError = require("../lib/Error");
 const Enum = require("../config/Enum");
 const is = require("is_js");
+const authMiddleware = require("../middleware/auth");
 
 /* GET users listing. */
-router.get("/", async (req, res, next) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     let users = await Users.find({});
     return res.json(Response.succesResponse(users));
@@ -17,47 +18,47 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/add", async (req, res) => {
-  let body = req.body;
-  try {
-    // const { email, password, first_name, last_name, phone_number } = req.body;
+// router.post("/add", authMiddleware, async (req, res) => {
+//   let body = req.body;
+//   try {
+//     // const { email, password, first_name, last_name, phone_number } = req.body;
 
-    // email alanı dolu mu boş mu kontrolü
-    if (!body.email) {
-      return res.status(400).json({ error: "Email alanı boş bırakılamaz!" });
-    }
+//     // email alanı dolu mu boş mu kontrolü
+//     if (!body.email) {
+//       return res.status(400).json({ error: "Email alanı boş bırakılamaz!" });
+//     }
 
-    // email formatı doğru mu kontrolü
-    if (is.not.email(body.email)) {
-      return res.status(400).json({ error: "Email yanlış formatta girilmiş!" });
-    }
+//     // email formatı doğru mu kontrolü
+//     if (is.not.email(body.email)) {
+//       return res.status(400).json({ error: "Email yanlış formatta girilmiş!" });
+//     }
 
-    // şifre alanı dolu mu boş mu kontrolü
-    if (!body.password) {
-      return res.status(400).json({ error: "Şifre alanı boş bırakılamaz!" });
-    }
+//     // şifre alanı dolu mu boş mu kontrolü
+//     if (!body.password) {
+//       return res.status(400).json({ error: "Şifre alanı boş bırakılamaz!" });
+//     }
 
-    // şifre karakter uzunluk kontrolü
-    if (body.password.length < 8) {
-      return res.status(400).json({ error: "Şifre 8 haneden büyük olmalıdır :))" });
-    }
+//     // şifre karakter uzunluk kontrolü
+//     if (body.password.length < 8) {
+//       return res.status(400).json({ error: "Şifre 8 haneden büyük olmalıdır :))" });
+//     }
 
-    let user = await Users.create({
-      email: body.email,
-      password: body.password,
-      is_active: true,
-      customer_name: body.customer_name,
-      phone_number: body.phone_number,
-    });
+//     let user = await Users.create({
+//       email: body.email,
+//       password: body.password,
+//       is_active: true,
+//       customer_name: body.customer_name,
+//       phone_number: body.phone_number,
+//     });
 
-    return res.status(Enum.HTTP_CODES.CREATED).json(Response.succesResponse({ success: true }, Enum.HTTP_CODES.CREATED));
-  } catch (error) {
-    let errorResponse = Response.errorResponse(error);
-    res.status(errorResponse.code).json(errorResponse);
-  }
-});
+//     return res.status(Enum.HTTP_CODES.CREATED).json(Response.succesResponse({ success: true }, Enum.HTTP_CODES.CREATED));
+//   } catch (error) {
+//     let errorResponse = Response.errorResponse(error);
+//     res.status(errorResponse.code).json(errorResponse);
+//   }
+// });
 
-router.post("/update", async (req, res) => {
+router.post("/update", authMiddleware, async (req, res) => {
   let body = req.body;
   let updates = {};
   try {
@@ -97,7 +98,7 @@ router.post("/update", async (req, res) => {
   }
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", authMiddleware, async (req, res) => {
   try {
     let body = req.body;
 

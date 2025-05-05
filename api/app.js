@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ROUTE TANIMLAMA YERLERİ
 app.use("/api", require("./routes/index"));
+app.use("/api/auth", require("./routes/auth"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

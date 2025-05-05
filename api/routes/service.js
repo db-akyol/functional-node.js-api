@@ -5,9 +5,10 @@ const Response = require("../lib/Response");
 const CustomError = require("../lib/Error");
 const Enum = require("../config/Enum");
 const is = require("is_js");
+const authMiddleware = require("../middleware/auth");
 
 /* GET services listing. */
-router.get("/", async (req, res, next) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     let services = await Service.find({});
     return res.json(Response.succesResponse(services));
@@ -17,7 +18,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", authMiddleware, async (req, res) => {
   let body = req.body;
   try {
     // const { email, password, first_name, last_name, phone_number } = req.body;
@@ -51,7 +52,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update", authMiddleware, async (req, res) => {
   let body = req.body;
   let updates = {};
   try {
@@ -76,7 +77,7 @@ router.post("/update", async (req, res) => {
   }
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", authMiddleware, async (req, res) => {
   try {
     let body = req.body;
 
