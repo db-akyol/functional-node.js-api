@@ -54,6 +54,8 @@ router.post("/register", async (req, res) => {
       phone_number,
     });
 
+    console.log(user);
+
     const token = generateToken({ userId: user._id, email: user.email });
     const refreshToken = generateRefreshToken({ userId: user._id });
 
@@ -92,6 +94,7 @@ router.post("/login", async (req, res) => {
     }
 
     const user = await Users.findOne({ email });
+    console.log(user);
     if (!user) {
       return res.status(401).json(
         Response.errorResponse({
